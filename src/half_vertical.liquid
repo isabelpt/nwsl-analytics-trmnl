@@ -56,7 +56,7 @@
 
   <div class="divider"></div>
 
-  <span class="title title--small">Recent Results</span>
+  <span class="title title--xsmall">Recent Results</span>
   {% for m in recent_results limit: 2 %}
   <div class="flex flex--row flex--between">
     <div>
@@ -65,37 +65,5 @@
     </div>
   </div>
   {% endfor %}
-
-  <span class="title title--small">xG Watch</span>
-  {% if xg_watch.over %}
-  <div class="flex flex--row flex--between">
-    <div>
-      <span class="label label--small">{{ xg_watch.over.team_name }}</span>
-      <span class="label label--small text--gray-40">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</span>
-    </div>
-    <span class="title title--small">+{{ xg_watch.over.delta }}</span>
-  </div>
-  {% endif %}
-  {% if xg_watch.under %}
-  <div class="flex flex--row flex--between">
-    <div>
-      <span class="label label--small">{{ xg_watch.under.team_name }}</span>
-      <span class="label label--small text--gray-40">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</span>
-    </div>
-    <span class="title title--small">{{ xg_watch.under.delta }}</span>
-  </div>
-  {% endif %}
-
-  <span class="title title--small">Goals Added Leader</span>
-  {% for p in goals_added_leaders limit: 1 %}
-  <div class="flex flex--row flex--between">
-    <div>
-      <span class="label label--small">{{ p.player_name }}</span>
-      <span class="label label--small text--gray-40">{{ p.team_name }}</span>
-    </div>
-    <span class="title title--small">{{ p.goals_added }}</span>
-  </div>
-  {% endfor %}
-
   <span class="label label--small text--gray-40">Updated {{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
