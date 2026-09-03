@@ -1,0 +1,67 @@
+<!--
+  NWSL Analytics — Quadrant layout (400×240)
+  Same polling payload as the full-size markup.liquid. Paste into TRMNL's
+  "Quadrant" markup tab.
+-->
+<style>
+  .nwsl-q-wrap { font-family: 'JetBrains Mono', ui-monospace, monospace; color: #23221D; padding: 14px 18px; display: flex; flex-direction: column; height: 100%; }
+  .nwsl-q-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .nwsl-q-title { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; }
+  .nwsl-q-date { font-size: 7px; font-weight: 500; color: #6B6960; }
+
+  .nwsl-q-table { width: 100%; border-collapse: collapse; font-size: 8px; }
+  .nwsl-q-table th { font-size: 6px; color: #6B6960; text-align: right; font-weight: 500; letter-spacing: 0.05em; border-bottom: 1px solid #C7C5B7; padding-bottom: 4px; }
+  .nwsl-q-table th:first-child, .nwsl-q-table th:nth-child(2) { text-align: left; }
+  .nwsl-q-table th.form-h { text-align: center; }
+  .nwsl-q-table td { text-align: right; padding: 3.5px 0; border-bottom: 1px solid #C7C5B7; font-variant-numeric: tabular-nums; }
+  .nwsl-q-table td:first-child, .nwsl-q-table td:nth-child(2) { text-align: left; }
+  .nwsl-q-table td.team { font-weight: 700; }
+  .nwsl-q-table td.pts { font-weight: 700; }
+  .nwsl-q-lead { display: inline-block; width: 4px; height: 4px; border-radius: 1px; background: #23221D; margin-right: 4px; }
+
+  .nwsl-q-form { display: flex; gap: 2px; justify-content: center; }
+  .nwsl-q-fm { width: 6px; height: 6px; border-radius: 1px; flex-shrink: 0; }
+  .nwsl-q-fm.w { background: #23221D; }
+  .nwsl-q-fm.d { background: #B9B6A6; }
+  .nwsl-q-fm.l { background: #EFEEE6; border: 1px solid #B9B6A6; }
+
+  .nwsl-q-last { display: flex; justify-content: space-between; align-items: baseline; padding-top: 8px; margin-top: auto; border-top: 1px solid #C7C5B7; }
+  .nwsl-q-last-teams { font-size: 7px; color: #6B6960; }
+  .nwsl-q-last-score { font-size: 7px; font-weight: 700; color: #23221D; font-variant-numeric: tabular-nums; }
+  .nwsl-q-time { font-size: 6px; color: #6B6960; }
+</style>
+
+<div class="nwsl-q-wrap">
+  <div class="nwsl-q-head">
+    <span class="nwsl-q-title">NWSL</span>
+    <span class="nwsl-q-date">{{ updated_at | date: "%b %-d" }}</span>
+  </div>
+
+  <table class="nwsl-q-table">
+    <thead>
+      <tr><th>#</th><th>Club</th><th>GD</th><th>PTS</th><th class="form-h">Form</th></tr>
+    </thead>
+    <tbody>
+      {% for t in standings limit: 6 %}
+      <tr>
+        <td>{% if t.rank == 1 %}<span class="nwsl-q-lead"></span>{% endif %}{{ t.rank }}</td>
+        <td class="team">{{ t.team_name }}</td>
+        <td>{{ t.gd }}</td>
+        <td class="pts">{{ t.pts }}</td>
+        <td>
+          <div class="nwsl-q-form">
+            {% for r in t.form %}<span class="nwsl-q-fm {{ r }}"></span>{% endfor %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="nwsl-q-last">
+    {% for m in recent_results limit: 1 %}
+    <span class="nwsl-q-last-teams">{{ m.home }} <span class="nwsl-q-last-score">{{ m.home_score }}–{{ m.away_score }}</span> {{ m.away }}</span>
+    {% endfor %}
+    <span class="nwsl-q-time">{{ updated_at | date: "%-I:%M %p" }}</span>
+  </div>
+</div>
