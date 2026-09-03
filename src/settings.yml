@@ -30,6 +30,15 @@ oauth_token_field_name: ''
 oauth_expiry_field_name: ''
 oauth_expiry_strategy: ''
 oauth_fixed_expiry_ms: ''
+custom_fields:
+- keyname: author_info
+  name: About This Plugin
+  category: sports
+  field_type: author_bio
+  description: NWSL Analytics was created by Isabel P.
+  github_url: https://github.com/isabelpt
+  learn_more_url: https://isabelpradotucker.vercel.app/
+  email_address: iaptny@gmail.com
 name: NWSL Analytics
 description: Current NWSL standings
 refresh_interval: 15
