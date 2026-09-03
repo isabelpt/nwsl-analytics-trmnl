@@ -3,14 +3,6 @@
   (title_bar / layout / columns / table / title / label / flex / divider /
   bg--*, text--* grayscale tokens) instead of custom CSS.
 
-  Density pass: table uses `table--xsmall` (Framework's smallest row-height
-  variant) with `data-table-limit` removed entirely, so every team in the
-  league renders — no truncation. Sidebar text dropped from the base
-  `description`/`value` sizes down to `label--small` (names/meta) and
-  `title--small` (the emphasized numbers), and the layout/legend gaps went
-  from `gap--medium` to `gap--small`, since at the original sizes everything
-  was rendering noticeably larger than the rest of the device family.
-
   Expects the polling response shaped by worker.js:
   {
     standings: [{rank, team_name, w, d, l, pts, gd, form: ['w'|'d'|'l', ...]}],
@@ -18,10 +10,6 @@
     xg_watch: { over: {team_name, gd, xgd, delta}, under: {...} },
     goals_added_leaders: [{player_name, team_name, goals_added}]
   }
-
-  Per TRMNL's private-plugin convention this is LAYOUT + TITLE_BAR markup only —
-  the platform wraps it in <div class="screen"><div class="view view--full">...
-  automatically, so don't add that wrapper yourself.
 -->
 
 <!--
