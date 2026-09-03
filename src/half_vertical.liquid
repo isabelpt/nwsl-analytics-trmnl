@@ -37,16 +37,6 @@
   .nwsl-hv-match-meta { font-size: 6.5px; color: #6B6960; margin-top: 1px; }
   .nwsl-hv-score { font-weight: 700; color: #23221D; }
 
-  .nwsl-hv-xg-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; }
-  .nwsl-hv-xg-team { font-size: 8px; font-weight: 700; }
-  .nwsl-hv-xg-tag { font-size: 6px; color: #6B6960; }
-  .nwsl-hv-xg-val { font-size: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
-
-  .nwsl-hv-gp-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; }
-  .nwsl-hv-gp-name { font-size: 8px; }
-  .nwsl-hv-gp-team { font-size: 6px; color: #6B6960; }
-  .nwsl-hv-gp-val { font-size: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
-
   .nwsl-hv-status { font-size: 6px; color: #6B6960; margin-top: auto; padding-top: 8px; }
 </style>
 
@@ -86,37 +76,7 @@
     </div>
     {% endfor %}
 
-    <p class="nwsl-hv-sub">xG Watch</p>
-    {% if xg_watch.over %}
-    <div class="nwsl-hv-xg-row">
-      <div>
-        <div class="nwsl-hv-xg-team">{{ xg_watch.over.team_name }}</div>
-        <div class="nwsl-hv-xg-tag">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</div>
-      </div>
-      <div class="nwsl-hv-xg-val">+{{ xg_watch.over.delta }}</div>
-    </div>
-    {% endif %}
-    {% if xg_watch.under %}
-    <div class="nwsl-hv-xg-row">
-      <div>
-        <div class="nwsl-hv-xg-team">{{ xg_watch.under.team_name }}</div>
-        <div class="nwsl-hv-xg-tag">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</div>
-      </div>
-      <div class="nwsl-hv-xg-val">{{ xg_watch.under.delta }}</div>
-    </div>
-    {% endif %}
-
-    <p class="nwsl-hv-sub">Goals Added Leader</p>
-    {% for p in goals_added_leaders limit: 1 %}
-    <div class="nwsl-hv-gp-row">
-      <div>
-        <div class="nwsl-hv-gp-name">{{ p.player_name }}</div>
-        <div class="nwsl-hv-gp-team">{{ p.team_name }}</div>
-      </div>
-      <div class="nwsl-hv-gp-val">{{ p.goals_added }}</div>
-    </div>
-    {% endfor %}
-  </div>
+  
 
   <p class="nwsl-hv-status">Updated {{ updated_at | date: "%-I:%M %p" }}</p>
 </div>
