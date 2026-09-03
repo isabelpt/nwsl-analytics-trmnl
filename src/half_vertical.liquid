@@ -1,0 +1,122 @@
+<!--
+  NWSL Analytics — Half Vertical layout (400×480)
+  Same polling payload as the full-size markup.liquid. Paste into TRMNL's
+  "Half Vertical" markup tab.
+-->
+<style>
+  .nwsl-hv-wrap { font-family: 'JetBrains Mono', ui-monospace, monospace; color: #23221D; padding: 18px 20px; display: flex; flex-direction: column; height: 100%; }
+  .nwsl-hv-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .nwsl-hv-title { font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; }
+  .nwsl-hv-date { font-size: 7.5px; font-weight: 500; color: #6B6960; }
+
+  .nwsl-hv-table { width: 100%; border-collapse: collapse; font-size: 8px; }
+  .nwsl-hv-table th { font-size: 6px; color: #6B6960; text-align: right; font-weight: 500; letter-spacing: 0.05em; border-bottom: 1px solid #C7C5B7; padding-bottom: 4px; }
+  .nwsl-hv-table th:first-child, .nwsl-hv-table th:nth-child(2) { text-align: left; }
+  .nwsl-hv-table th.form-h { text-align: center; }
+  .nwsl-hv-table td { text-align: right; padding: 3.5px 0; border-bottom: 1px solid #C7C5B7; font-variant-numeric: tabular-nums; }
+  .nwsl-hv-table td:first-child, .nwsl-hv-table td:nth-child(2) { text-align: left; }
+  .nwsl-hv-table td.team { font-weight: 700; }
+  .nwsl-hv-table td.pts { font-weight: 700; }
+  .nwsl-hv-table tr.cutline td { border-bottom: 1.4px solid #23221D; }
+  .nwsl-hv-table tr.below td { color: #B9B6A6; }
+  .nwsl-hv-lead { display: inline-block; width: 4px; height: 4px; border-radius: 1px; background: #23221D; margin-right: 4px; }
+
+  .nwsl-hv-form { display: flex; gap: 2px; justify-content: center; }
+  .nwsl-hv-fm { width: 6px; height: 6px; border-radius: 1px; flex-shrink: 0; }
+  .nwsl-hv-fm.w { background: #23221D; }
+  .nwsl-hv-fm.d { background: #B9B6A6; }
+  .nwsl-hv-fm.l { background: #EFEEE6; border: 1px solid #B9B6A6; }
+
+  .nwsl-hv-bottom { padding-top: 10px; margin-top: 10px; border-top: 1px solid #C7C5B7; }
+  .nwsl-hv-sub { font-size: 6.5px; font-weight: 500; letter-spacing: 0.08em; color: #6B6960; text-transform: uppercase; margin: 10px 0 6px; }
+  .nwsl-hv-sub:first-child { margin-top: 0; }
+
+  .nwsl-hv-match { padding: 4px 0; border-top: 1px solid #C7C5B7; }
+  .nwsl-hv-match:first-child { border-top: none; }
+  .nwsl-hv-match-teams { font-size: 8px; font-weight: 700; }
+  .nwsl-hv-match-meta { font-size: 6.5px; color: #6B6960; margin-top: 1px; }
+  .nwsl-hv-score { font-weight: 700; color: #23221D; }
+
+  .nwsl-hv-xg-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; }
+  .nwsl-hv-xg-team { font-size: 8px; font-weight: 700; }
+  .nwsl-hv-xg-tag { font-size: 6px; color: #6B6960; }
+  .nwsl-hv-xg-val { font-size: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .nwsl-hv-gp-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; }
+  .nwsl-hv-gp-name { font-size: 8px; }
+  .nwsl-hv-gp-team { font-size: 6px; color: #6B6960; }
+  .nwsl-hv-gp-val { font-size: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .nwsl-hv-status { font-size: 6px; color: #6B6960; margin-top: auto; padding-top: 8px; }
+</style>
+
+<div class="nwsl-hv-wrap">
+  <div class="nwsl-hv-head">
+    <span class="nwsl-hv-title">NWSL</span>
+    <span class="nwsl-hv-date">{{ updated_at | date: "%a %b %-d" }}</span>
+  </div>
+
+  <table class="nwsl-hv-table">
+    <thead>
+      <tr><th>#</th><th>Club</th><th>GD</th><th>PTS</th><th class="form-h">Form</th></tr>
+    </thead>
+    <tbody>
+      {% for t in standings %}
+      <tr class="{% if t.rank == 8 %}cutline{% endif %}{% if t.rank > 8 %} below{% endif %}">
+        <td>{% if t.rank == 1 %}<span class="nwsl-hv-lead"></span>{% endif %}{{ t.rank }}</td>
+        <td class="team">{{ t.team_name }}</td>
+        <td>{{ t.gd }}</td>
+        <td class="pts">{{ t.pts }}</td>
+        <td>
+          <div class="nwsl-hv-form">
+            {% for r in t.form %}<span class="nwsl-hv-fm {{ r }}"></span>{% endfor %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="nwsl-hv-bottom">
+    <p class="nwsl-hv-sub">Recent Results</p>
+    {% for m in recent_results limit: 2 %}
+    <div class="nwsl-hv-match">
+      <div class="nwsl-hv-match-teams">{{ m.home }} <span class="nwsl-hv-score">{{ m.home_score }}–{{ m.away_score }}</span> {{ m.away }}</div>
+      <div class="nwsl-hv-match-meta">{{ m.date | date: "%b %-d" }}</div>
+    </div>
+    {% endfor %}
+
+    <p class="nwsl-hv-sub">xG Watch</p>
+    {% if xg_watch.over %}
+    <div class="nwsl-hv-xg-row">
+      <div>
+        <div class="nwsl-hv-xg-team">{{ xg_watch.over.team_name }}</div>
+        <div class="nwsl-hv-xg-tag">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</div>
+      </div>
+      <div class="nwsl-hv-xg-val">+{{ xg_watch.over.delta }}</div>
+    </div>
+    {% endif %}
+    {% if xg_watch.under %}
+    <div class="nwsl-hv-xg-row">
+      <div>
+        <div class="nwsl-hv-xg-team">{{ xg_watch.under.team_name }}</div>
+        <div class="nwsl-hv-xg-tag">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</div>
+      </div>
+      <div class="nwsl-hv-xg-val">{{ xg_watch.under.delta }}</div>
+    </div>
+    {% endif %}
+
+    <p class="nwsl-hv-sub">Goals Added Leader</p>
+    {% for p in goals_added_leaders limit: 1 %}
+    <div class="nwsl-hv-gp-row">
+      <div>
+        <div class="nwsl-hv-gp-name">{{ p.player_name }}</div>
+        <div class="nwsl-hv-gp-team">{{ p.team_name }}</div>
+      </div>
+      <div class="nwsl-hv-gp-val">{{ p.goals_added }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <p class="nwsl-hv-status">Updated {{ updated_at | date: "%-I:%M %p" }}</p>
+</div>
