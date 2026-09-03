@@ -1,12 +1,12 @@
 <!--
-  NWSL Analytics — TRMNL private plugin markup
-  Expects the polling response shaped by worker.js:
-  {
-    standings: [{rank, team_name, w, d, l, pts, gd, form: ['w'|'d'|'l', ...]}],
-    recent_results: [{home, away, home_score, away_score, date}],
-    xg_watch: { over: {team_name, gd, xgd, delta}, under: {...} },
-    goals_added_leaders: [{player_name, team_name, goals_added}]
-  }
+NWSL Analytics — TRMNL private plugin markup
+Expects the polling response shaped by worker.js:
+{
+standings: [{rank, team_name, w, d, l, pts, gd, form: ['w'|'d'|'l', ...]}],
+recent_results: [{home, away, home_score, away_score, date}],
+xg_watch: { over: {team_name, gd, xgd, delta}, under: {...} },
+goals_added_leaders: [{player_name, team_name, goals_added}]
+}
 -->
 <style>
   .nwsl-wrap { font-family: 'JetBrains Mono', ui-monospace, monospace; color: #23221D; }
