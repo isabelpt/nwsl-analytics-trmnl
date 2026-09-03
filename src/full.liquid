@@ -1,7 +1,15 @@
 <!--
   NWSL Analytics — Full layout, rewritten on TRMNL Framework v3.3 classes
-  (title_bar / layout / columns / table / title / label / description / value /
-  flex / divider / bg--*, text--* grayscale tokens) instead of custom CSS.
+  (title_bar / layout / columns / table / title / label / flex / divider /
+  bg--*, text--* grayscale tokens) instead of custom CSS.
+
+  Density pass: table uses `table--xsmall` (Framework's smallest row-height
+  variant) with `data-table-limit` removed entirely, so every team in the
+  league renders — no truncation. Sidebar text dropped from the base
+  `description`/`value` sizes down to `label--small` (names/meta) and
+  `title--small` (the emphasized numbers), and the layout/legend gaps went
+  from `gap--medium` to `gap--small`, since at the original sizes everything
+  was rendering noticeably larger than the rest of the device family.
 
   Expects the polling response shaped by worker.js:
   {
@@ -41,11 +49,11 @@
   <span class="instance">Standings</span>
 </div>
 
-<div class="layout layout--col gap--medium">
+<div class="layout layout--col gap--small mt--small">
   <div class="columns">
     <div class="column">
       <span class="title title--small">NWSL Standings</span>
-      <table class="table" data-table-limit="true">
+      <table class="table table--xsmall">
         <thead>
           <tr>
             <th><span class="title title--small">#</span></th>
@@ -69,7 +77,7 @@
                 </span>
               </span>
             </td>
-            <td><span class="label{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.team_name }}</span></td>
+            <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.team_name }}</span></td>
             <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.w }}</span></td>
             <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.d }}</span></td>
             <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.l }}</span></td>
@@ -86,9 +94,6 @@
               </span>
             </td>
           </tr>
-          {% if t.rank == 8 %}
-          <tr><td colspan="8"><div class="divider"></div></td></tr>
-          {% endif %}
           {% endfor %}
         </tbody>
       </table>
@@ -99,7 +104,7 @@
       {% for m in recent_results %}
       <div class="flex flex--row flex--between">
         <div>
-          <span class="description">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
+          <span class="label label--small">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
           <span class="label label--small text--gray-40">{{ m.date | date: "%b %-d" }}</span>
         </div>
       </div>
@@ -109,19 +114,19 @@
       {% if xg_watch.over %}
       <div class="flex flex--row flex--between">
         <div>
-          <span class="description">{{ xg_watch.over.team_name }}</span>
+          <span class="label label--small">{{ xg_watch.over.team_name }}</span>
           <span class="label label--small text--gray-40">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</span>
         </div>
-        <span class="value value--xsmall">+{{ xg_watch.over.delta }}</span>
+        <span class="title title--small">+{{ xg_watch.over.delta }}</span>
       </div>
       {% endif %}
       {% if xg_watch.under %}
       <div class="flex flex--row flex--between">
         <div>
-          <span class="description">{{ xg_watch.under.team_name }}</span>
+          <span class="label label--small">{{ xg_watch.under.team_name }}</span>
           <span class="label label--small text--gray-40">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</span>
         </div>
-        <span class="value value--xsmall">{{ xg_watch.under.delta }}</span>
+        <span class="title title--small">{{ xg_watch.under.delta }}</span>
       </div>
       {% endif %}
 
@@ -129,10 +134,10 @@
       {% for p in goals_added_leaders %}
       <div class="flex flex--row flex--between">
         <div>
-          <span class="description">{{ p.player_name }}</span>
+          <span class="label label--small">{{ p.player_name }}</span>
           <span class="label label--small text--gray-40">{{ p.team_name }}</span>
         </div>
-        <span class="value value--xsmall">{{ p.goals_added }}</span>
+        <span class="title title--small">{{ p.goals_added }}</span>
       </div>
       {% endfor %}
     </div>
@@ -140,7 +145,7 @@
 
   <div class="divider"></div>
 
-  <div class="flex flex--row gap--medium">
+  <div class="flex flex--row gap--small">
     <div class="flex flex--row gap--xsmall">
       <span class="w--[6px] h--[6px] bg--black rounded--[1px]"></span>
       <span class="label label--small text--gray-40">Win</span>
@@ -155,7 +160,7 @@
     </div>
     <span class="label label--small text--gray-40">GD — Goal Difference</span>
     <span class="label label--small text--gray-40">xGD — Expected Goal Difference</span>
-    <span class="label label--small text--gray-40">Divider row — playoff cutoff (top 8)</span>
+    <span class="label label--small text--gray-40">Faded rows — outside the playoff cutoff (top 8)</span>
   </div>
 
   <span class="label label--small text--gray-40">Standings updated {{ updated_at | date: "%-I:%M %p" }}</span>
