@@ -1,8 +1,13 @@
 <!--
   NWSL Analytics — Half Horizontal layout (800×240), TRMNL Framework v3.3.
   Same polling payload as the full-size markup. Paste into the "Half
-  Horizontal" markup tab. Uses the same title_bar icon pattern, table--xsmall
-  density, and label--small/title--small text sizing as the full layout.
+  Horizontal" markup tab.
+
+  Rebuilt as two half-width standings tables (ranks 1-8 / 9-16) instead of a
+  table + stats sidebar — that fits every team instead of just the top 7, and
+  uses the full 800px width instead of leaving a sidebar's worth of empty
+  space. W/D/L are dropped (same tradeoff as the Half Vertical layout) so two
+  tables fit side by side; GD/PTS/Form carry the story.
 -->
 {%- capture nwsl_icon_svg %}
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="none" stroke="#000000" stroke-width="1.6"/><polygon points="12,6.5 15.5,9 14.2,13.2 9.8,13.2 8.5,9" fill="#000000"/><line x1="12" y1="2" x2="12" y2="6.5" stroke="#000000" stroke-width="1.2"/><line x1="15.5" y1="9" x2="20.5" y2="7.3" stroke="#000000" stroke-width="1.2"/><line x1="14.2" y1="13.2" x2="16.8" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="9.8" y1="13.2" x2="7.2" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="8.5" y1="9" x2="3.5" y2="7.3" stroke="#000000" stroke-width="1.2"/></svg>
@@ -19,33 +24,27 @@
       <table class="table table--xsmall w--full">
         <thead>
           <tr>
-            <th class="px--small"><span class="title title--small">#</span></th>
-            <th class="px--small"><span class="title title--small">Club</span></th>
-            <th class="px--small"><span class="title title--small">W</span></th>
-            <th class="px--small"><span class="title title--small">D</span></th>
-            <th class="px--small"><span class="title title--small">L</span></th>
-            <th class="px--small"><span class="title title--small">GD</span></th>
-            <th class="px--small"><span class="title title--small">PTS</span></th>
-            <th class="px--small"><span class="title title--small">Form</span></th>
+            <th class="px--xsmall"><span class="title title--xsmall">#</span></th>
+            <th class="px--xsmall"><span class="title title--xsmall">Club</span></th>
+            <th class="px--xsmall"><span class="title title--xsmall">GD</span></th>
+            <th class="px--xsmall"><span class="title title--xsmall">PTS</span></th>
+            <th class="px--xsmall"><span class="title title--xsmall">Form</span></th>
           </tr>
         </thead>
         <tbody>
-          {% for t in standings limit: 7 %}
+          {% for t in standings limit: 8 %}
           <tr>
             <td class="px--small">
-              <span class="label label--small">
+              <span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">
                 <span class="flex flex--row gap--xsmall">
                   {% if t.rank == 1 %}<span class="w--[4px] h--[4px] bg--black rounded--[1px]"></span>{% endif %}
                   <span>{{ t.rank }}</span>
                 </span>
               </span>
             </td>
-            <td class="px--small"><span class="label label--small">{{ t.team_name }}</span></td>
-            <td class="px--small"><span class="label label--small">{{ t.w }}</span></td>
-            <td class="px--small"><span class="label label--small">{{ t.d }}</span></td>
-            <td class="px--small"><span class="label label--small">{{ t.l }}</span></td>
-            <td class="px--small"><span class="label label--small">{{ t.gd }}</span></td>
-            <td class="px--small"><span class="label label--small">{{ t.pts }}</span></td>
+            <td class="px--small"><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.team_name }}</span></td>
+            <td class="px--small"><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.gd }}</span></td>
+            <td class="px--small"><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.pts }}</span></td>
             <td class="px--small">
               <span class="flex flex--row gap--xsmall">
                 {% for r in t.form %}
@@ -64,39 +63,46 @@
 
     <div class="divider divider--v"></div>
 
-    <div class="basis--[220px] shrink-0">
-      <span class="title title--small">xG Watch</span>
-      {% if xg_watch.over %}
-      <div class="flex flex--row flex--between">
-        <div>
-          <span class="label label--small">{{ xg_watch.over.team_name }}</span>
-          <span class="label label--small text--gray-40">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</span>
-        </div>
-        <span class="title title--small">+{{ xg_watch.over.delta }}</span>
-      </div>
-      {% endif %}
-      {% if xg_watch.under %}
-      <div class="flex flex--row flex--between">
-        <div>
-          <span class="label label--small">{{ xg_watch.under.team_name }}</span>
-          <span class="label label--small text--gray-40">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</span>
-        </div>
-        <span class="title title--small">{{ xg_watch.under.delta }}</span>
-      </div>
-      {% endif %}
-
-      <span class="title title--small">Goals Added Leader</span>
-      {% for p in goals_added_leaders limit: 1 %}
-      <div class="flex flex--row flex--between">
-        <div>
-          <span class="label label--small">{{ p.player_name }}</span>
-          <span class="label label--small text--gray-40">{{ p.team_name }}</span>
-        </div>
-        <span class="title title--small">{{ p.goals_added }}</span>
-      </div>
-      {% endfor %}
+    <div class="grow">
+      <table class="table table--xsmall w--full">
+        <thead>
+          <tr>
+            <th class="px--small"><span class="title title--small">#</span></th>
+            <th class="px--small"><span class="title title--small">Club</span></th>
+            <th class="px--small"><span class="title title--small">GD</span></th>
+            <th class="px--small"><span class="title title--small">PTS</span></th>
+            <th class="px--small"><span class="title title--small">Form</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in standings offset: 8 limit: 8 %}
+          <tr>
+            <td class="px--small">
+              <span class="label label--small text--gray-40">
+                <span class="flex flex--row gap--xsmall">
+                  <span>{{ t.rank }}</span>
+                </span>
+              </span>
+            </td>
+            <td class="px--small"><span class="label label--small text--gray-40">{{ t.team_name }}</span></td>
+            <td class="px--small"><span class="label label--small text--gray-40">{{ t.gd }}</span></td>
+            <td class="px--small"><span class="label label--small text--gray-40">{{ t.pts }}</span></td>
+            <td class="px--small">
+              <span class="flex flex--row gap--xsmall">
+                {% for r in t.form %}
+                  {% if r == 'w' %}<span class="w--[6px] h--[6px] bg--black rounded--[1px]"></span>
+                  {% elsif r == 'd' %}<span class="w--[6px] h--[6px] bg--gray-45 rounded--[1px]"></span>
+                  {% else %}<span class="w--[6px] h--[6px] bg--gray-15 rounded--[1px]"></span>
+                  {% endif %}
+                {% endfor %}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <span class="label label--small text--gray-40">Standings updated {{ updated_at | date: "%-I:%M %p" }}</span>
+  <span class="label label--small text--gray-40">Standings updated {{ updated_at | date: "%-I:%M %p" }} · Faded — outside the playoff cutoff (top 8)</span>
 </div>
