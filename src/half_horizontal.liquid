@@ -19,20 +19,20 @@
       <table class="table table--xsmall">
         <thead>
           <tr>
-            <th><span class="title title--small">#</span></th>
-            <th><span class="title title--small">Club</span></th>
-            <th><span class="title title--small">W</span></th>
-            <th><span class="title title--small">D</span></th>
-            <th><span class="title title--small">L</span></th>
-            <th><span class="title title--small">GD</span></th>
-            <th><span class="title title--small">PTS</span></th>
-            <th><span class="title title--small">Form</span></th>
+            <th class="px--medium"><span class="title title--medium">#</span></th>
+            <th class="px--small"><span class="title title--medium">Club</span></th>
+            <th class="px--small"><span class="title title--small">W</span></th>
+            <th class="px--small"><span class="title title--small">D</span></th>
+            <th class="px--small"><span class="title title--small">L</span></th>
+            <th class="px--small"><span class="title title--small">GD</span></th>
+            <th class="px--small"><span class="title title--small">PTS</span></th>
+            <th class="px--small"><span class="title title--small">Form</span></th>
           </tr>
         </thead>
         <tbody>
           {% for t in standings limit: 7 %}
           <tr>
-            <td>
+            <td class="px--small">
               <span class="label label--small">
                 <span class="flex flex--row gap--xsmall">
                   {% if t.rank == 1 %}<span class="w--[4px] h--[4px] bg--black rounded--[1px]"></span>{% endif %}
@@ -40,13 +40,13 @@
                 </span>
               </span>
             </td>
-            <td><span class="label label--small">{{ t.team_name }}</span></td>
-            <td><span class="label label--small">{{ t.w }}</span></td>
-            <td><span class="label label--small">{{ t.d }}</span></td>
-            <td><span class="label label--small">{{ t.l }}</span></td>
-            <td><span class="label label--small">{{ t.gd }}</span></td>
-            <td><span class="label label--small">{{ t.pts }}</span></td>
-            <td>
+            <td class="px--small"><span class="label label--small">{{ t.team_name }}</span></td>
+            <td class="px--small"><span class="label label--small">{{ t.w }}</span></td>
+            <td class="px--small"><span class="label label--small">{{ t.d }}</span></td>
+            <td class="px--small"><span class="label label--small">{{ t.l }}</span></td>
+            <td class="px--small"><span class="label label--small">{{ t.gd }}</span></td>
+            <td class="px--small"><span class="label label--small">{{ t.pts }}</span></td>
+            <td class="px--small">
               <span class="flex flex--row gap--xsmall">
                 {% for r in t.form %}
                   {% if r == 'w' %}<span class="w--[6px] h--[6px] bg--black rounded--[1px]"></span>
