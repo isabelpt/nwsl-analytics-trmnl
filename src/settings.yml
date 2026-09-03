@@ -31,5 +31,5 @@ oauth_expiry_field_name: ''
 oauth_expiry_strategy: ''
 oauth_fixed_expiry_ms: ''
 name: NWSL Analytics
-description: ''
+description: Current NWSL standings
 refresh_interval: 15
