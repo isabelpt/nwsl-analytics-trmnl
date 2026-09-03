@@ -42,7 +42,7 @@
       <tr><th>#</th><th>Club</th><th>GD</th><th>PTS</th><th class="form-h">Form</th></tr>
     </thead>
     <tbody>
-      {% for t in standings limit: 6 %}
+      {% for t in standings limit: 8 %}
       <tr>
         <td>{% if t.rank == 1 %}<span class="nwsl-q-lead"></span>{% endif %}{{ t.rank }}</td>
         <td class="team">{{ t.team_name }}</td>
