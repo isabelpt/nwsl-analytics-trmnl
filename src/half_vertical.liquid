@@ -11,7 +11,7 @@
 
 <div class="title_bar">
   <img class="image image--adaptive" src="data:image/svg+xml;base64,{{ nwsl_icon_svg | base64_encode }}">
-  <span class="title">NWSL</span>
+  <span class="title">NWSL Analytics</span>
 </div>
 
 <div class="layout layout--col gap--small mt--medium">
@@ -54,16 +54,5 @@
     </tbody>
   </table>
 
-  <div class="divider"></div>
-
-  <span class="title title--xsmall">Recent Results</span>
-  {% for m in recent_results limit: 2 %}
-  <div class="flex flex--row flex--between">
-    <div>
-      <span class="label label--small">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
-      <span class="label label--small text--gray-40">{{ m.date | date: "%b %-d" }}</span>
-    </div>
-  </div>
-  {% endfor %}
   <span class="label label--small text--gray-40">Updated {{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
