@@ -1,72 +1,60 @@
 <!--
-  NWSL Analytics Half Horizontal layout (800×240)
+  NWSL Analytics — Half Horizontal layout (800×240), TRMNL Framework v3.3.
+  Same polling payload as the full-size markup. Paste into the "Half
+  Horizontal" markup tab. Uses the same title_bar icon pattern, table--xsmall
+  density, and label--small/title--small text sizing as the full layout.
 -->
-<style>
-  .nwsl-hh-wrap { font-family: 'JetBrains Mono', ui-monospace, monospace; color: #23221D; padding: 18px 24px; display: flex; flex-direction: column; height: 100%; }
-  .nwsl-hh-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .nwsl-hh-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
-  .nwsl-hh-date { font-size: 9px; font-weight: 500; color: #6B6960; }
+{%- capture nwsl_icon_svg %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="none" stroke="#000000" stroke-width="1.6"/><polygon points="12,6.5 15.5,9 14.2,13.2 9.8,13.2 8.5,9" fill="#000000"/><line x1="12" y1="2" x2="12" y2="6.5" stroke="#000000" stroke-width="1.2"/><line x1="15.5" y1="9" x2="20.5" y2="7.3" stroke="#000000" stroke-width="1.2"/><line x1="14.2" y1="13.2" x2="16.8" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="9.8" y1="13.2" x2="7.2" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="8.5" y1="9" x2="3.5" y2="7.3" stroke="#000000" stroke-width="1.2"/></svg>
+{%- endcapture %}
 
-  .nwsl-hh-row { display: flex; gap: 22px; flex: 1; min-height: 0; }
+<div class="title_bar">
+  <img class="image image--adaptive" src="data:image/svg+xml;base64,{{ nwsl_icon_svg | base64_encode }}">
+  <span class="title">NWSL Analytics</span>
+</div>
 
-  .nwsl-hh-table { width: 100%; border-collapse: collapse; font-size: 8px; }
-  .nwsl-hh-table th { font-size: 6px; color: #6B6960; text-align: right; font-weight: 500; letter-spacing: 0.05em; border-bottom: 1px solid #C7C5B7; padding-bottom: 4px; }
-  .nwsl-hh-table th:first-child, .nwsl-hh-table th:nth-child(2) { text-align: left; }
-  .nwsl-hh-table th.form-h { text-align: center; }
-  .nwsl-hh-table td { text-align: right; padding: 3.5px 0; border-bottom: 1px solid #C7C5B7; font-variant-numeric: tabular-nums; }
-  .nwsl-hh-table td:first-child, .nwsl-hh-table td:nth-child(2) { text-align: left; }
-  .nwsl-hh-table td.team { font-weight: 700; }
-  .nwsl-hh-table td.pts { font-weight: 700; }
-  .nwsl-hh-lead { display: inline-block; width: 4px; height: 4px; border-radius: 1px; background: #23221D; margin-right: 4px; }
-
-  .nwsl-hh-form { display: flex; gap: 2px; justify-content: center; }
-  .nwsl-hh-fm { width: 6px; height: 6px; border-radius: 1px; flex-shrink: 0; }
-  .nwsl-hh-fm.w { background: #23221D; }
-  .nwsl-hh-fm.d { background: #B9B6A6; }
-  .nwsl-hh-fm.l { background: #EFEEE6; border: 1px solid #B9B6A6; }
-
-  .nwsl-hh-side { flex: 0 0 220px; border-left: 1px solid #C7C5B7; padding-left: 20px; display: flex; flex-direction: column; }
-  .nwsl-hh-sub { font-size: 6.5px; font-weight: 500; letter-spacing: 0.08em; color: #6B6960; text-transform: uppercase; margin: 0 0 6px; }
-  .nwsl-hh-sub.second { margin-top: 12px; }
-
-  .nwsl-hh-xg-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; }
-  .nwsl-hh-xg-team { font-size: 8px; font-weight: 700; }
-  .nwsl-hh-xg-tag { font-size: 6px; color: #6B6960; }
-  .nwsl-hh-xg-val { font-size: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
-
-  .nwsl-hh-gp-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; }
-  .nwsl-hh-gp-name { font-size: 8px; }
-  .nwsl-hh-gp-team { font-size: 6px; color: #6B6960; }
-  .nwsl-hh-gp-val { font-size: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
-
-  .nwsl-hh-status { font-size: 6px; color: #6B6960; margin-top: 8px; }
-</style>
-
-<div class="nwsl-hh-wrap">
-  <div class="nwsl-hh-head">
-    <span class="nwsl-hh-title">NWSL ANALYTICS</span>
-  </div>
-
-  <div class="nwsl-hh-row">
-    <div style="flex: 1;">
-      <table class="nwsl-hh-table">
+<div class="layout layout--col gap--small mt--medium">
+  <div class="layout layout--row gap--medium">
+    <div class="grow">
+      <table class="table table--xsmall">
         <thead>
-          <tr><th>#</th><th>Club</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>PTS</th><th class="form-h">Form</th></tr>
+          <tr>
+            <th><span class="title title--small">#</span></th>
+            <th><span class="title title--small">Club</span></th>
+            <th><span class="title title--small">W</span></th>
+            <th><span class="title title--small">D</span></th>
+            <th><span class="title title--small">L</span></th>
+            <th><span class="title title--small">GD</span></th>
+            <th><span class="title title--small">PTS</span></th>
+            <th><span class="title title--small">Form</span></th>
+          </tr>
         </thead>
         <tbody>
-          {% for t in standings limit: 8 %}
+          {% for t in standings limit: 7 %}
           <tr>
-            <td>{% if t.rank == 1 %}<span class="nwsl-hh-lead"></span>{% endif %}{{ t.rank }}</td>
-            <td class="team">{{ t.team_name }}</td>
-            <td>{{ t.w }}</td>
-            <td>{{ t.d }}</td>
-            <td>{{ t.l }}</td>
-            <td>{{ t.gd }}</td>
-            <td class="pts">{{ t.pts }}</td>
             <td>
-              <div class="nwsl-hh-form">
-                {% for r in t.form %}<span class="nwsl-hh-fm {{ r }}"></span>{% endfor %}
-              </div>
+              <span class="label label--small">
+                <span class="flex flex--row gap--xsmall">
+                  {% if t.rank == 1 %}<span class="w--[4px] h--[4px] bg--black rounded--[1px]"></span>{% endif %}
+                  <span>{{ t.rank }}</span>
+                </span>
+              </span>
+            </td>
+            <td><span class="label label--small">{{ t.team_name }}</span></td>
+            <td><span class="label label--small">{{ t.w }}</span></td>
+            <td><span class="label label--small">{{ t.d }}</span></td>
+            <td><span class="label label--small">{{ t.l }}</span></td>
+            <td><span class="label label--small">{{ t.gd }}</span></td>
+            <td><span class="label label--small">{{ t.pts }}</span></td>
+            <td>
+              <span class="flex flex--row gap--xsmall">
+                {% for r in t.form %}
+                  {% if r == 'w' %}<span class="w--[6px] h--[6px] bg--black rounded--[1px]"></span>
+                  {% elsif r == 'd' %}<span class="w--[6px] h--[6px] bg--gray-45 rounded--[1px]"></span>
+                  {% else %}<span class="w--[6px] h--[6px] bg--gray-15 rounded--[1px]"></span>
+                  {% endif %}
+                {% endfor %}
+              </span>
             </td>
           </tr>
           {% endfor %}
@@ -74,39 +62,41 @@
       </table>
     </div>
 
-    <div class="nwsl-hh-side">
-      <p class="nwsl-hh-sub">xG Watch</p>
+    <div class="divider divider--v"></div>
+
+    <div class="basis--[220px] shrink-0">
+      <span class="title title--small">xG Watch</span>
       {% if xg_watch.over %}
-      <div class="nwsl-hh-xg-row">
+      <div class="flex flex--row flex--between">
         <div>
-          <div class="nwsl-hh-xg-team">{{ xg_watch.over.team_name }}</div>
-          <div class="nwsl-hh-xg-tag">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</div>
+          <span class="label label--small">{{ xg_watch.over.team_name }}</span>
+          <span class="label label--small text--gray-40">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</span>
         </div>
-        <div class="nwsl-hh-xg-val">+{{ xg_watch.over.delta }}</div>
+        <span class="title title--small">+{{ xg_watch.over.delta }}</span>
       </div>
       {% endif %}
       {% if xg_watch.under %}
-      <div class="nwsl-hh-xg-row">
+      <div class="flex flex--row flex--between">
         <div>
-          <div class="nwsl-hh-xg-team">{{ xg_watch.under.team_name }}</div>
-          <div class="nwsl-hh-xg-tag">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</div>
+          <span class="label label--small">{{ xg_watch.under.team_name }}</span>
+          <span class="label label--small text--gray-40">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</span>
         </div>
-        <div class="nwsl-hh-xg-val">{{ xg_watch.under.delta }}</div>
+        <span class="title title--small">{{ xg_watch.under.delta }}</span>
       </div>
       {% endif %}
 
-      <p class="nwsl-hh-sub second">Goals Added Leader</p>
+      <span class="title title--small">Goals Added Leader</span>
       {% for p in goals_added_leaders limit: 1 %}
-      <div class="nwsl-hh-gp-row">
+      <div class="flex flex--row flex--between">
         <div>
-          <div class="nwsl-hh-gp-name">{{ p.player_name }}</div>
-          <div class="nwsl-hh-gp-team">{{ p.team_name }}</div>
+          <span class="label label--small">{{ p.player_name }}</span>
+          <span class="label label--small text--gray-40">{{ p.team_name }}</span>
         </div>
-        <div class="nwsl-hh-gp-val">{{ p.goals_added }}</div>
+        <span class="title title--small">{{ p.goals_added }}</span>
       </div>
       {% endfor %}
     </div>
   </div>
 
-  <p class="nwsl-hh-status">Standings updated {{ updated_at | date: "%-I:%M %p" }}</p>
+  <span class="label label--small text--gray-40">Standings updated {{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
