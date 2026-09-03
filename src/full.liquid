@@ -1,15 +1,15 @@
 <!--
-NWSL Analytics — TRMNL private plugin markup
-Expects the polling response shaped by worker.js:
-{
-standings: [{rank, team_name, w, d, l, pts, gd, form: ['w'|'d'|'l', ...]}],
-recent_results: [{home, away, home_score, away_score, date}],
-xg_watch: { over: {team_name, gd, xgd, delta}, under: {...} },
-goals_added_leaders: [{player_name, team_name, goals_added}]
-}
+  NWSL Analytics — TRMNL private plugin markup
+  Expects the polling response shaped by worker.js:
+  {
+    standings: [{rank, team_name, w, d, l, pts, gd, form: ['w'|'d'|'l', ...]}],
+    recent_results: [{home, away, home_score, away_score, date}],
+    xg_watch: { over: {team_name, gd, xgd, delta}, under: {...} },
+    goals_added_leaders: [{player_name, team_name, goals_added}]
+  }
 -->
 <style>
-  .nwsl-wrap { font-family: 'JetBrains Mono', ui-monospace, monospace; color: #23221D; }
+  .nwsl-wrap { font-family: 'JetBrains Mono', ui-monospace, monospace; color: #23221D; padding: 28px; }
   .nwsl-row { display: flex; }
   .nwsl-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 12px; }
   .nwsl-sub { font-size: 6.5px; font-weight: 500; letter-spacing: 0.08em; color: #6B6960; text-transform: uppercase; margin: 14px 0 8px; }
@@ -51,6 +51,10 @@ goals_added_leaders: [{player_name, team_name, goals_added}]
   .nwsl-gp-val { font-size: 8.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
 
   .nwsl-status { font-size: 6.5px; color: #6B6960; margin-top: 14px; }
+
+  .nwsl-legend { display: flex; gap: 18px; padding-top: 14px; margin-top: 16px; border-top: 1px solid #C7C5B7; }
+  .nwsl-legend-item { display: flex; align-items: center; gap: 5px; font-size: 6px; color: #6B6960; letter-spacing: 0.02em; }
+  .nwsl-legend-marks { display: flex; gap: 2px; }
 </style>
 
 <div class="nwsl-wrap">
@@ -122,6 +126,21 @@ goals_added_leaders: [{player_name, team_name, goals_added}]
       </div>
       {% endfor %}
     </div>
+  </div>
+
+  <div class="nwsl-legend">
+    <div class="nwsl-legend-item">
+      <span class="nwsl-legend-marks"><span class="nwsl-fm w"></span></span> Win
+    </div>
+    <div class="nwsl-legend-item">
+      <span class="nwsl-legend-marks"><span class="nwsl-fm d"></span></span> Draw
+    </div>
+    <div class="nwsl-legend-item">
+      <span class="nwsl-legend-marks"><span class="nwsl-fm l"></span></span> Loss
+    </div>
+    <div class="nwsl-legend-item">GD — Goal Difference</div>
+    <div class="nwsl-legend-item">xGD — Expected Goal Difference</div>
+    <div class="nwsl-legend-item">Solid line — playoff cutoff (top 8)</div>
   </div>
 
   <p class="nwsl-status">Standings updated {{ updated_at | date: "%-I:%M %p" }}</p>
