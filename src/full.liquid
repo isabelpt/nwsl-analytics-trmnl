@@ -1,0 +1,74 @@
+<!--
+  NWSL Analytics — TRMNL private plugin markup
+  Expects the polling response shaped by worker.js:
+  { standings: [{rank, team_name, w, d, l, pts, gd}], this_week: [...], recent_results: [...] }
+-->
+<style>
+  .nwsl-wrap { font-family: 'JetBrains Mono', ui-monospace, monospace; color: #23221D; }
+  .nwsl-row { display: flex; }
+  .nwsl-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 12px; }
+  .nwsl-sub { font-size: 6.5px; font-weight: 500; letter-spacing: 0.08em; color: #6B6960; text-transform: uppercase; margin: 0 0 8px; }
+  .nwsl-table { width: 100%; border-collapse: collapse; font-size: 8px; }
+  .nwsl-table th { font-size: 6px; color: #6B6960; text-align: right; font-weight: 500; letter-spacing: 0.05em; border-bottom: 1px solid #C7C5B7; padding-bottom: 5px; }
+  .nwsl-table th:first-child, .nwsl-table th:nth-child(2) { text-align: left; }
+  .nwsl-table td { text-align: right; padding: 5px 0; border-bottom: 1px solid #C7C5B7; font-variant-numeric: tabular-nums; }
+  .nwsl-table td:first-child, .nwsl-table td:nth-child(2) { text-align: left; }
+  .nwsl-table td.team { font-weight: 700; }
+  .nwsl-table td.pts { font-weight: 700; }
+  .nwsl-table tr.cutline td { border-bottom: 1.4px solid #23221D; }
+  .nwsl-table tr.below td { color: #B9B6A6; }
+  .nwsl-lead { display: inline-block; width: 4px; height: 4px; border-radius: 1px; background: #23221D; margin-right: 4px; }
+  .nwsl-side { border-left: 1px solid #C7C5B7; padding-left: 22px; }
+  .nwsl-match { padding: 8px 0; border-top: 1px solid #C7C5B7; }
+  .nwsl-match:first-child { border-top: none; }
+  .nwsl-match-teams { font-size: 9px; font-weight: 700; }
+  .nwsl-match-meta { font-size: 7px; color: #6B6960; margin-top: 2px; }
+  .nwsl-score { font-weight: 700; color: #23221D; }
+  .nwsl-status { font-size: 6.5px; color: #6B6960; margin-top: 14px; }
+</style>
+
+<div class="nwsl-wrap">
+  <div class="nwsl-row" style="gap: 28px;">
+    <div style="flex: 1;">
+      <p class="nwsl-title">NWSL Standings</p>
+      <table class="nwsl-table">
+        <thead>
+          <tr><th>#</th><th>Club</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>PTS</th></tr>
+        </thead>
+        <tbody>
+          {% for t in standings %}
+          <tr class="{% if t.rank == 8 %}cutline{% endif %}{% if t.rank > 8 %} below{% endif %}">
+            <td>{% if t.rank == 1 %}<span class="nwsl-lead"></span>{% endif %}{{ t.rank }}</td>
+            <td class="team">{{ t.team_name }}</td>
+            <td>{{ t.w }}</td>
+            <td>{{ t.d }}</td>
+            <td>{{ t.l }}</td>
+            <td>{{ t.gd }}</td>
+            <td class="pts">{{ t.pts }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="nwsl-side" style="flex: 0 0 240px;">
+      <p class="nwsl-sub">This Week</p>
+      {% for m in this_week %}
+      <div class="nwsl-match">
+        <div class="nwsl-match-teams">{{ m.home }} vs {{ m.away }}</div>
+        <div class="nwsl-match-meta">{{ m.date | date: "%a, %-I:%M %p" }}</div>
+      </div>
+      {% endfor %}
+
+      <p class="nwsl-sub" style="margin-top: 16px;">Recent Results</p>
+      {% for m in recent_results %}
+      <div class="nwsl-match">
+        <div class="nwsl-match-teams">{{ m.home }} <span class="nwsl-score">{{ m.home_score }}–{{ m.away_score }}</span> {{ m.away }}</div>
+        <div class="nwsl-match-meta">{{ m.date | date: "%b %-d" }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <p class="nwsl-status">Standings updated {{ updated_at | date: "%-I:%M %p" }}</p>
+</div>
