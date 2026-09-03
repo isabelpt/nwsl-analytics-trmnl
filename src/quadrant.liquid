@@ -1,67 +1,63 @@
 <!--
-  NWSL Analytics — Quadrant layout (400×240)
-  Same polling payload as the full-size markup.liquid. Paste into TRMNL's
-  "Quadrant" markup tab.
+  NWSL Analytics — Quadrant layout (400×240), TRMNL Framework v3.3.
+  Same polling payload as the full-size markup. Paste into the "Quadrant"
+  markup tab. Tightest size — likely shares the screen with 3 other plugins,
+  so this shows only what a glance needs: top 7 + GD/PTS/Form, one compact
+  last-result line, no sidebar, no legend.
 -->
-<style>
-  .nwsl-q-wrap { font-family: 'JetBrains Mono', ui-monospace, monospace; color: #23221D; padding: 14px 18px; display: flex; flex-direction: column; height: 100%; }
-  .nwsl-q-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .nwsl-q-title { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; }
-  .nwsl-q-date { font-size: 7px; font-weight: 500; color: #6B6960; }
+{%- capture nwsl_icon_svg %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="none" stroke="#000000" stroke-width="1.6"/><polygon points="12,6.5 15.5,9 14.2,13.2 9.8,13.2 8.5,9" fill="#000000"/><line x1="12" y1="2" x2="12" y2="6.5" stroke="#000000" stroke-width="1.2"/><line x1="15.5" y1="9" x2="20.5" y2="7.3" stroke="#000000" stroke-width="1.2"/><line x1="14.2" y1="13.2" x2="16.8" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="9.8" y1="13.2" x2="7.2" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="8.5" y1="9" x2="3.5" y2="7.3" stroke="#000000" stroke-width="1.2"/></svg>
+{%- endcapture %}
 
-  .nwsl-q-table { width: 100%; border-collapse: collapse; font-size: 8px; }
-  .nwsl-q-table th { font-size: 6px; color: #6B6960; text-align: right; font-weight: 500; letter-spacing: 0.05em; border-bottom: 1px solid #C7C5B7; padding-bottom: 4px; }
-  .nwsl-q-table th:first-child, .nwsl-q-table th:nth-child(2) { text-align: left; }
-  .nwsl-q-table th.form-h { text-align: center; }
-  .nwsl-q-table td { text-align: right; padding: 3.5px 0; border-bottom: 1px solid #C7C5B7; font-variant-numeric: tabular-nums; }
-  .nwsl-q-table td:first-child, .nwsl-q-table td:nth-child(2) { text-align: left; }
-  .nwsl-q-table td.team { font-weight: 700; }
-  .nwsl-q-table td.pts { font-weight: 700; }
-  .nwsl-q-lead { display: inline-block; width: 4px; height: 4px; border-radius: 1px; background: #23221D; margin-right: 4px; }
+<div class="title_bar">
+  <img class="image image--adaptive" src="data:image/svg+xml;base64,{{ nwsl_icon_svg | base64_encode }}">
+  <span class="title">NWSL</span>
+</div>
 
-  .nwsl-q-form { display: flex; gap: 2px; justify-content: center; }
-  .nwsl-q-fm { width: 6px; height: 6px; border-radius: 1px; flex-shrink: 0; }
-  .nwsl-q-fm.w { background: #23221D; }
-  .nwsl-q-fm.d { background: #B9B6A6; }
-  .nwsl-q-fm.l { background: #EFEEE6; border: 1px solid #B9B6A6; }
-
-  .nwsl-q-last { display: flex; justify-content: space-between; align-items: baseline; padding-top: 8px; margin-top: auto; border-top: 1px solid #C7C5B7; }
-  .nwsl-q-last-teams { font-size: 7px; color: #6B6960; }
-  .nwsl-q-last-score { font-size: 7px; font-weight: 700; color: #23221D; font-variant-numeric: tabular-nums; }
-  .nwsl-q-time { font-size: 6px; color: #6B6960; }
-</style>
-
-<div class="nwsl-q-wrap">
-  <div class="nwsl-q-head">
-    <span class="nwsl-q-title">NWSL</span>
-    <span class="nwsl-q-date">{{ updated_at | date: "%b %-d" }}</span>
-  </div>
-
-  <table class="nwsl-q-table">
+<div class="layout layout--col gap--small mt--medium">
+  <table class="table table--xsmall">
     <thead>
-      <tr><th>#</th><th>Club</th><th>GD</th><th>PTS</th><th class="form-h">Form</th></tr>
+      <tr>
+        <th><span class="title title--small">#</span></th>
+        <th><span class="title title--small">Club</span></th>
+        <th><span class="title title--small">GD</span></th>
+        <th><span class="title title--small">PTS</span></th>
+        <th><span class="title title--small">Form</span></th>
+      </tr>
     </thead>
     <tbody>
-      {% for t in standings limit: 8 %}
+      {% for t in standings limit: 7 %}
       <tr>
-        <td>{% if t.rank == 1 %}<span class="nwsl-q-lead"></span>{% endif %}{{ t.rank }}</td>
-        <td class="team">{{ t.team_name }}</td>
-        <td>{{ t.gd }}</td>
-        <td class="pts">{{ t.pts }}</td>
         <td>
-          <div class="nwsl-q-form">
-            {% for r in t.form %}<span class="nwsl-q-fm {{ r }}"></span>{% endfor %}
-          </div>
+          <span class="label label--small">
+            <span class="flex flex--row gap--xsmall">
+              {% if t.rank == 1 %}<span class="w--[4px] h--[4px] bg--black rounded--[1px]"></span>{% endif %}
+              <span>{{ t.rank }}</span>
+            </span>
+          </span>
+        </td>
+        <td><span class="label label--small">{{ t.team_name }}</span></td>
+        <td><span class="label label--small">{{ t.gd }}</span></td>
+        <td><span class="label label--small">{{ t.pts }}</span></td>
+        <td>
+          <span class="flex flex--row gap--xsmall">
+            {% for r in t.form %}
+              {% if r == 'w' %}<span class="w--[6px] h--[6px] bg--black rounded--[1px]"></span>
+              {% elsif r == 'd' %}<span class="w--[6px] h--[6px] bg--gray-45 rounded--[1px]"></span>
+              {% else %}<span class="w--[6px] h--[6px] bg--gray-15 rounded--[1px]"></span>
+              {% endif %}
+            {% endfor %}
+          </span>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  <div class="nwsl-q-last">
+  <div class="flex flex--row flex--between">
     {% for m in recent_results limit: 1 %}
-    <span class="nwsl-q-last-teams">{{ m.home }} <span class="nwsl-q-last-score">{{ m.home_score }}–{{ m.away_score }}</span> {{ m.away }}</span>
+    <span class="label label--small text--gray-40">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
     {% endfor %}
-    <span class="nwsl-q-time">{{ updated_at | date: "%-I:%M %p" }}</span>
+    <span class="label label--small text--gray-40">{{ updated_at | date: "%-I:%M %p" }}</span>
   </div>
 </div>
