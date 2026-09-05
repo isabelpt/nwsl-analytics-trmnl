@@ -1,5 +1,5 @@
 <!--
-  NWSL Analytics — Quadrant layout (400×240), TRMNL Framework v3.3.
+  NWSL Analytics — Quadrant layout 
 -->
 {%- capture nwsl_icon_svg %}
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="none" stroke="#000000" stroke-width="1.6"/><polygon points="12,6.5 15.5,9 14.2,13.2 9.8,13.2 8.5,9" fill="#000000"/><line x1="12" y1="2" x2="12" y2="6.5" stroke="#000000" stroke-width="1.2"/><line x1="15.5" y1="9" x2="20.5" y2="7.3" stroke="#000000" stroke-width="1.2"/><line x1="14.2" y1="13.2" x2="16.8" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="9.8" y1="13.2" x2="7.2" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="8.5" y1="9" x2="3.5" y2="7.3" stroke="#000000" stroke-width="1.2"/></svg>
@@ -7,40 +7,40 @@
 
 <div class="title_bar">
   <img class="image image--adaptive" src="data:image/svg+xml;base64,{{ nwsl_icon_svg | base64_encode }}">
-  <span class="title">NWSL Analytics</span>
+  <span class="title">NWSL</span>
 </div>
 
-<div class="layout layout--col gap--small mt--medium">
-  <table class="table table--xsmall">
+<div class="layout layout--col gap--small lg:gap--medium mt--medium lg:mt--large">
+  <table class="table table--xsmall lg:table--small w--full">
     <thead>
       <tr>
-        <th><span class="title title--small">#</span></th>
-        <th><span class="title title--small">Club</span></th>
-        <th><span class="title title--small">GD</span></th>
-        <th><span class="title title--small">PTS</span></th>
-        <th><span class="title title--small">Form</span></th>
+        <th><span class="label label--small lg:label--base">#</span></th>
+        <th><span class="label label--small lg:label--base">Club</span></th>
+        <th><span class="label label--small lg:label--base">GD</span></th>
+        <th><span class="label label--small lg:label--base">PTS</span></th>
+        <th><span class="label label--small lg:label--base">Form</span></th>
       </tr>
     </thead>
     <tbody>
       {% for t in standings limit: 7 %}
       <tr>
         <td>
-          <span class="label label--small">
+          <span class="label label--small lg:label--base">
             <span class="flex flex--row gap--xsmall">
-              {% if t.rank == 1 %}<span class="w--[4px] h--[4px] bg--black rounded--[1px]"></span>{% endif %}
+              {% if t.rank == 1 %}<span class="w--[4px] h--[4px] lg:w--[6px] lg:h--[6px] bg--black rounded--[1px]"></span>{% endif %}
               <span>{{ t.rank }}</span>
             </span>
           </span>
         </td>
-        <td><span class="label label--small">{{ t.team_name }}</span></td>
-        <td><span class="label label--small">{{ t.gd }}</span></td>
-        <td><span class="label label--small">{{ t.pts }}</span></td>
+        <td><span class="label label--small lg:label--base">{{ t.team_name }}</span></td>
+        <td><span class="label label--small lg:label--base">{{ t.gd }}</span></td>
+        <td><span class="label label--small lg:label--base">{{ t.pts }}</span></td>
         <td>
           <span class="flex flex--row gap--xsmall">
             {% for r in t.form %}
-              {% if r == 'w' %}<span class="w--[6px] h--[6px] bg--black rounded--[1px]"></span>
-              {% elsif r == 'd' %}<span class="w--[6px] h--[6px] bg--gray-45 rounded--[1px]"></span>
-              {% else %}<span class="w--[6px] h--[6px] bg--gray-15 rounded--[1px]"></span>
+              {% if r == 'w' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--black rounded--[1px]"></span>
+              {% elsif r == 'd' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-45 rounded--[1px]"></span>
+              {% else %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-15 rounded--[1px]"></span>
               {% endif %}
             {% endfor %}
           </span>
@@ -52,8 +52,8 @@
 
   <div class="flex flex--row flex--between">
     {% for m in recent_results limit: 1 %}
-    <span class="label label--small text--gray-40">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
+    <span class="label label--small lg:label--base text--gray-40">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
     {% endfor %}
-    <span class="label label--small text--gray-40">{{ updated_at | date: "%-I:%M %p" }}</span>
+    <span class="label label--small lg:label--base text--gray-40">{{ updated_at | date: "%-I:%M %p" }}</span>
   </div>
 </div>
