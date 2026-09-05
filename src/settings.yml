@@ -35,7 +35,7 @@ custom_fields:
   name: About This Plugin
   field_type: author_bio
   category: sports
-  description: NWSL Analytics was created by Isabel P.
+  description: NWSL Analytics was created by Isabel P. Data from American Soccer Analysis API- no authentication required.
   github_url: https://github.com/isabelpt
   learn_more_url: https://isabelpradotucker.vercel.app/
   email_address: iaptny@gmail.com
