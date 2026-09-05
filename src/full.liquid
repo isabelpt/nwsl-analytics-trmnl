@@ -1,30 +1,5 @@
 <!--
-  NWSL Analytics — Full layout, rewritten on TRMNL Framework v3.3 classes
-  (title_bar / layout / columns / table / title / label / flex / divider /
-  bg--*, text--* grayscale tokens) instead of custom CSS.
-
-  Density pass: table uses `table--xsmall` (Framework's smallest row-height
-  variant) with `data-table-limit` removed entirely, so every team in the
-  league renders — no truncation. Sidebar text dropped from the base
-  `description`/`value` sizes down to `label--small` (names/meta) and
-  `title--small` (the emphasized numbers), and the layout/legend gaps went
-  from `gap--medium` to `gap--small`, since at the original sizes everything
-  was rendering noticeably larger than the rest of the device family.
-
-  Responsive pass: `.columns`/`.column` swapped for a manual
-  `flex flex--row portrait:flex--col` so the standings/sidebar split
-  explicitly stacks vertically in portrait instead of squeezing side by side
-  (same reasoning applied to the legend row). `lg:` variants throughout bump
-  text, table density, gaps and mark-square size up a notch for TRMNL X's
-  larger screen — OG stays exactly as already tuned, `lg:` only kicks in on
-  the larger device class. I can't preview TRMNL X myself, so treat these as
-  a first pass to verify against the real device rather than a finished tune.
-
-  Post-pass fix: the standings table needed `w--full` added directly to the
-  `<table>` element inside its `.grow` div — without it the table shrink-wraps
-  to its own content width instead of expanding to fill the flex row, which
-  left ~55% of the screen blank on the right (same root cause hit earlier on
-  the half-horizontal layout).
+  NWSL Analytics — Full layout
 
   Expects the polling response shaped by worker.js:
   {
@@ -33,10 +8,6 @@
     xg_watch: { over: {team_name, gd, xgd, delta}, under: {...} },
     goals_added_leaders: [{player_name, team_name, goals_added}]
   }
-
-  Per TRMNL's private-plugin convention this is LAYOUT + TITLE_BAR markup only —
-  the platform wraps it in <div class="screen"><div class="view view--full">...
-  automatically, so don't add that wrapper yourself.
 -->
 
 <!--
