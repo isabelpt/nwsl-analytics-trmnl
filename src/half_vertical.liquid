@@ -55,5 +55,14 @@
   {% else %}
   <span class="label label--small lg:label--base text--gray-40">Standings unavailable</span>
   {% endif %}
-  <span class="label label--small lg:label--base text--gray-40">Updated {{ updated_at | date: "%-I:%M %p" }}</span>
+   <div class="flex flex--row flex--between">
+    {% if recent_results.size > 0 %}
+    {% for m in recent_results limit: 1 %}
+    <span class="label label--small lg:label--base text--gray-40">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
+    {% endfor %}
+    {% else %}
+    <span class="label label--small lg:label--base text--gray-40">No recent results</span>
+    {% endif %}
+    <span class="label label--small lg:label--base text--gray-40">{{ updated_at | date: "%-I:%M %p" }}</span>
+  </div>
 </div>
