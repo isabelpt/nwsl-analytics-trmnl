@@ -34,6 +34,7 @@ custom_fields:
 - keyname: author_info
   name: About This Plugin
   field_type: author_bio
+  category: sports
   description: NWSL Analytics was created by Isabel P.
   github_url: https://github.com/isabelpt
   learn_more_url: https://isabelpradotucker.vercel.app/
