@@ -41,4 +41,4 @@ custom_fields:
   email_address: iaptny@gmail.com
 name: NWSL Analytics
 description: Current NWSL standings
-refresh_interval: 15
+refresh_interval: 60
