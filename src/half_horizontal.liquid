@@ -4,15 +4,17 @@
 {%- capture nwsl_icon_svg %}
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="none" stroke="#000000" stroke-width="1.6"/><polygon points="12,6.5 15.5,9 14.2,13.2 9.8,13.2 8.5,9" fill="#000000"/><line x1="12" y1="2" x2="12" y2="6.5" stroke="#000000" stroke-width="1.2"/><line x1="15.5" y1="9" x2="20.5" y2="7.3" stroke="#000000" stroke-width="1.2"/><line x1="14.2" y1="13.2" x2="16.8" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="9.8" y1="13.2" x2="7.2" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="8.5" y1="9" x2="3.5" y2="7.3" stroke="#000000" stroke-width="1.2"/></svg>
 {%- endcapture %}
-
+ 
+{%- assign empty_array = "" | split: "," %}
+ 
 <div class="title_bar">
   <img class="image image--adaptive" src="data:image/svg+xml;base64,{{ nwsl_icon_svg | base64_encode }}">
   <span class="title">NWSL Analytics</span>
 </div>
-
+ 
 <div class="layout layout--col gap--small lg:gap--medium mt--medium lg:mt--large">
   <div class="flex flex--row gap--medium lg:gap--large w--full">
-
+ 
     <div class="grow">
       {% if standings.size > 0 %}
       <table class="table table--xsmall lg:table--small w--full" data-table-limit="true">
@@ -41,7 +43,7 @@
             <td class="px--small"><span class="label label--small lg:label--base">{{ t.pts }}</span></td>
             <td class="px--small">
               <span class="flex flex--row gap--xsmall">
-                {% for r in t.form %}
+                {% for r in t.form | default: empty_array %}
                   {% if r == 'w' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--black rounded--small"></span>
                   {% elsif r == 'd' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-45 rounded--small"></span>
                   {% else %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-15 rounded--small"></span>
@@ -57,9 +59,9 @@
       <span class="label label--small lg:label--base text--gray-40">Standings unavailable</span>
       {% endif %}
     </div>
-
-    <div class="divider divider--v"></div>
-
+ 
+    <div class="w--[1px] h--full bg--gray-15"></div>
+ 
     <div class="basis--[260px] lg:basis--[340px] shrink-0">
       <span class="title title--small lg:title--base">Recent Results</span>
       {% if recent_results.size > 0 %}
@@ -67,14 +69,14 @@
       <div class="flex flex--row flex--between">
         <div>
           <span class="label label--small lg:label--base">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
-          <span class="label label--small lg:label--base text--gray-40">{{ m.date | date: "%b %-d" }}</span>
+          <span class="label label--small lg:label--base text--gray-40">{{ m.date }}</span>
         </div>
       </div>
       {% endfor %}
       {% else %}
       <span class="label label--small lg:label--base text--gray-40">No recent results</span>
       {% endif %}
-
+ 
       <span class="title title--small lg:title--base">xG Watch</span>
       {% if xg_watch %}
         {% if xg_watch.over %}
@@ -99,8 +101,8 @@
       <span class="label label--small lg:label--base text--gray-40">No xG data</span>
       {% endif %}
     </div>
-
+ 
   </div>
-
+ 
   <span class="label label--small lg:label--base text--gray-40">Standings updated {{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
