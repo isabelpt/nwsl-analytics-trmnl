@@ -33,7 +33,6 @@ oauth_fixed_expiry_ms: ''
 custom_fields:
 - keyname: author_info
   name: About This Plugin
-  category: sports
   field_type: author_bio
   description: NWSL Analytics was created by Isabel P.
   github_url: https://github.com/isabelpt
