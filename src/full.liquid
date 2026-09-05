@@ -1,6 +1,31 @@
 <!--
-  NWSL Analytics
-  
+  NWSL Analytics — Full layout, rewritten on TRMNL Framework v3.3 classes
+  (title_bar / layout / columns / table / title / label / flex / divider /
+  bg--*, text--* grayscale tokens) instead of custom CSS.
+
+  Density pass: table uses `table--xsmall` (Framework's smallest row-height
+  variant) with `data-table-limit` removed entirely, so every team in the
+  league renders — no truncation. Sidebar text dropped from the base
+  `description`/`value` sizes down to `label--small` (names/meta) and
+  `title--small` (the emphasized numbers), and the layout/legend gaps went
+  from `gap--medium` to `gap--small`, since at the original sizes everything
+  was rendering noticeably larger than the rest of the device family.
+
+  Responsive pass: `.columns`/`.column` swapped for a manual
+  `flex flex--row portrait:flex--col` so the standings/sidebar split
+  explicitly stacks vertically in portrait instead of squeezing side by side
+  (same reasoning applied to the legend row). `lg:` variants throughout bump
+  text, table density, gaps and mark-square size up a notch for TRMNL X's
+  larger screen — OG stays exactly as already tuned, `lg:` only kicks in on
+  the larger device class. I can't preview TRMNL X myself, so treat these as
+  a first pass to verify against the real device rather than a finished tune.
+
+  Post-pass fix: the standings table needed `w--full` added directly to the
+  `<table>` element inside its `.grow` div — without it the table shrink-wraps
+  to its own content width instead of expanding to fill the flex row, which
+  left ~55% of the screen blank on the right (same root cause hit earlier on
+  the half-horizontal layout).
+
   Expects the polling response shaped by worker.js:
   {
     standings: [{rank, team_name, w, d, l, pts, gd, form: ['w'|'d'|'l', ...]}],
@@ -8,8 +33,27 @@
     xg_watch: { over: {team_name, gd, xgd, delta}, under: {...} },
     goals_added_leaders: [{player_name, team_name, goals_added}]
   }
+
+  Per TRMNL's private-plugin convention this is LAYOUT + TITLE_BAR markup only —
+  the platform wraps it in <div class="screen"><div class="view view--full">...
+  automatically, so don't add that wrapper yourself.
 -->
 
+<!--
+  title_bar rebuilt to match TRMNL's documented example exactly: icon image as
+  first child, then title, then instance. The earlier version (title + instance
+  only, no image) caused the overlapping-header bug — removing title_bar
+  entirely rendered clean, so the image element being absent looks like the
+  actual cause.
+
+  The icon itself is an inline SVG run through TRMNL's own documented pattern
+  for inline images (help.trmnl.com "Creating inline images for plugins"):
+  capture the raw SVG markup, then base64-encode it at render time with
+  Liquid's `base64_encode` filter, rather than pasting a pre-encoded base64
+  string directly into src (a hand-pasted data: URI in a raw src attribute
+  appears to get silently stripped by TRMNL's markup sanitizer — that's why
+  the icon wasn't showing).
+-->
 {%- capture nwsl_icon_svg %}
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="none" stroke="#000000" stroke-width="1.6"/><polygon points="12,6.5 15.5,9 14.2,13.2 9.8,13.2 8.5,9" fill="#000000"/><line x1="12" y1="2" x2="12" y2="6.5" stroke="#000000" stroke-width="1.2"/><line x1="15.5" y1="9" x2="20.5" y2="7.3" stroke="#000000" stroke-width="1.2"/><line x1="14.2" y1="13.2" x2="16.8" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="9.8" y1="13.2" x2="7.2" y2="18.5" stroke="#000000" stroke-width="1.2"/><line x1="8.5" y1="9" x2="3.5" y2="7.3" stroke="#000000" stroke-width="1.2"/></svg>
 {%- endcapture %}
@@ -17,47 +61,49 @@
 <div class="title_bar">
   <img class="image image--adaptive" src="data:image/svg+xml;base64,{{ nwsl_icon_svg | base64_encode }}">
   <span class="title">NWSL Analytics</span>
+  <span class="instance">Standings</span>
 </div>
 
-<div class="layout layout--col gap--small mt--medium p--medium">
-  <div class="columns">
-    <div class="column">
-      <table class="table table--xsmall">
+<div class="layout layout--col gap--small lg:gap--medium mt--medium lg:mt--large p--medium lg:p--large">
+  <div class="flex flex--row portrait:flex--col gap--medium">
+    <div class="grow">
+      <span class="title title--small lg:title--base">NWSL Standings</span>
+      <table class="table table--xsmall lg:table--small w--full">
         <thead>
           <tr>
-            <th><span class="title title--small">#</span></th>
-            <th><span class="title title--small">Club</span></th>
-            <th><span class="title title--small">W</span></th>
-            <th><span class="title title--small">D</span></th>
-            <th><span class="title title--small">L</span></th>
-            <th><span class="title title--small">GD</span></th>
-            <th><span class="title title--small">PTS</span></th>
-            <th><span class="title title--small">Form</span></th>
+            <th><span class="label label--small lg:label--base">#</span></th>
+            <th><span class="label label--small lg:label--base">Club</span></th>
+            <th><span class="label label--small lg:label--base">W</span></th>
+            <th><span class="label label--small lg:label--base">D</span></th>
+            <th><span class="label label--small lg:label--base">L</span></th>
+            <th><span class="label label--small lg:label--base">GD</span></th>
+            <th><span class="label label--small lg:label--base">PTS</span></th>
+            <th><span class="label label--small lg:label--base">Form</span></th>
           </tr>
         </thead>
         <tbody>
           {% for t in standings %}
           <tr>
             <td>
-              <span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">
+              <span class="label label--small lg:label--base{% if t.rank > 8 %} text--gray-40{% endif %}">
                 <span class="flex flex--row gap--xsmall">
-                  {% if t.rank == 1 %}<span class="w--[4px] h--[4px] bg--black rounded--[1px]"></span>{% endif %}
+                  {% if t.rank == 1 %}<span class="w--[4px] h--[4px] lg:w--[6px] lg:h--[6px] bg--black rounded--[1px]"></span>{% endif %}
                   <span>{{ t.rank }}</span>
                 </span>
               </span>
             </td>
-            <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.team_name }}</span></td>
-            <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.w }}</span></td>
-            <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.d }}</span></td>
-            <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.l }}</span></td>
-            <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.gd }}</span></td>
-            <td><span class="label label--small{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.pts }}</span></td>
+            <td><span class="label label--small lg:label--base{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.team_name }}</span></td>
+            <td><span class="label label--small lg:label--base{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.w }}</span></td>
+            <td><span class="label label--small lg:label--base{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.d }}</span></td>
+            <td><span class="label label--small lg:label--base{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.l }}</span></td>
+            <td><span class="label label--small lg:label--base{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.gd }}</span></td>
+            <td><span class="label label--small lg:label--base{% if t.rank > 8 %} text--gray-40{% endif %}">{{ t.pts }}</span></td>
             <td>
               <span class="flex flex--row gap--xsmall">
                 {% for r in t.form %}
-                  {% if r == 'w' %}<span class="w--[6px] h--[6px] bg--black rounded--[1px]"></span>
-                  {% elsif r == 'd' %}<span class="w--[6px] h--[6px] bg--gray-45 rounded--[1px]"></span>
-                  {% else %}<span class="w--[6px] h--[6px] bg--gray-15 rounded--[1px]"></span>
+                  {% if r == 'w' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--black rounded--[1px]"></span>
+                  {% elsif r == 'd' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-45 rounded--[1px]"></span>
+                  {% else %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-15 rounded--[1px]"></span>
                   {% endif %}
                 {% endfor %}
               </span>
@@ -68,45 +114,45 @@
       </table>
     </div>
 
-    <div class="column">
-      <span class="title title--small">Recent Results</span>
+    <div class="basis--[260px] shrink-0">
+      <span class="title title--small lg:title--base">Recent Results</span>
       {% for m in recent_results %}
       <div class="flex flex--row flex--between">
         <div>
-          <span class="label label--small">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
-          <span class="label label--small text--gray-40">{{ m.date | date: "%b %-d" }}</span>
+          <span class="label label--small lg:label--base">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
+          <span class="label label--small lg:label--base text--gray-40">{{ m.date | date: "%b %-d" }}</span>
         </div>
       </div>
       {% endfor %}
 
-      <span class="title title--small">xG Watch</span>
+      <span class="title title--small lg:title--base">xG Watch</span>
       {% if xg_watch.over %}
       <div class="flex flex--row flex--between">
         <div>
-          <span class="label label--small">{{ xg_watch.over.team_name }}</span>
-          <span class="label label--small text--gray-40">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</span>
+          <span class="label label--small lg:label--base">{{ xg_watch.over.team_name }}</span>
+          <span class="label label--small lg:label--base text--gray-40">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</span>
         </div>
-        <span class="title title--small">+{{ xg_watch.over.delta }}</span>
+        <span class="title title--small lg:title--base">+{{ xg_watch.over.delta }}</span>
       </div>
       {% endif %}
       {% if xg_watch.under %}
       <div class="flex flex--row flex--between">
         <div>
-          <span class="label label--small">{{ xg_watch.under.team_name }}</span>
-          <span class="label label--small text--gray-40">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</span>
+          <span class="label label--small lg:label--base">{{ xg_watch.under.team_name }}</span>
+          <span class="label label--small lg:label--base text--gray-40">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</span>
         </div>
-        <span class="title title--small">{{ xg_watch.under.delta }}</span>
+        <span class="title title--small lg:title--base">{{ xg_watch.under.delta }}</span>
       </div>
       {% endif %}
 
-      <span class="title title--small">Goals Added Leaders</span>
+      <span class="title title--small lg:title--base">Goals Added Leaders</span>
       {% for p in goals_added_leaders %}
       <div class="flex flex--row flex--between">
         <div>
-          <span class="label label--small">{{ p.player_name }}</span>
-          <span class="label label--small text--gray-40">{{ p.team_name }}</span>
+          <span class="label label--small lg:label--base">{{ p.player_name }}</span>
+          <span class="label label--small lg:label--base text--gray-40">{{ p.team_name }}</span>
         </div>
-        <span class="title title--small">{{ p.goals_added }}</span>
+        <span class="title title--small lg:title--base">{{ p.goals_added }}</span>
       </div>
       {% endfor %}
     </div>
@@ -114,23 +160,23 @@
 
   <div class="divider"></div>
 
-  <div class="flex flex--row gap--small">
+  <div class="flex flex--row portrait:flex--col gap--small">
     <div class="flex flex--row gap--xsmall">
-      <span class="w--[6px] h--[6px] bg--black rounded--[1px]"></span>
-      <span class="label label--small text--gray-40">Win</span>
+      <span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--black rounded--[1px]"></span>
+      <span class="label label--small lg:label--base text--gray-40">Win</span>
     </div>
     <div class="flex flex--row gap--xsmall">
-      <span class="w--[6px] h--[6px] bg--gray-45 rounded--[1px]"></span>
-      <span class="label label--small text--gray-40">Draw</span>
+      <span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-45 rounded--[1px]"></span>
+      <span class="label label--small lg:label--base text--gray-40">Draw</span>
     </div>
     <div class="flex flex--row gap--xsmall">
-      <span class="w--[6px] h--[6px] bg--gray-15 rounded--[1px]"></span>
-      <span class="label label--small text--gray-40">Loss</span>
+      <span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-15 rounded--[1px]"></span>
+      <span class="label label--small lg:label--base text--gray-40">Loss</span>
     </div>
-    <span class="label label--small text--gray-40">GD — Goal Difference</span>
-    <span class="label label--small text--gray-40">xGD — Expected Goal Difference</span>
-    <span class="label label--small text--gray-40">Faded rows — outside the playoff cutoff (top 8)</span>
+    <span class="label label--small lg:label--base text--gray-40">GD — Goal Difference</span>
+    <span class="label label--small lg:label--base text--gray-40">xGD — Expected Goal Difference</span>
+    <span class="label label--small lg:label--base text--gray-40">Faded rows — outside the playoff cutoff (top 8)</span>
   </div>
 
-  <span class="label label--small text--gray-40">Standings updated {{ updated_at | date: "%-I:%M %p" }}</span>
+  <span class="label label--small lg:label--base text--gray-40">Standings updated {{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
