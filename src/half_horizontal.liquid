@@ -28,7 +28,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for t in standings limit: 7 %}
+          {% for t in standings limit: 8 %}
           <tr>
             <td class="px--small">
               <span class="label label--small lg:label--base">
@@ -44,10 +44,7 @@
             <td class="px--small">
               <span class="flex flex--row gap--xsmall">
                 {% for r in t.form | default: empty_array %}
-                  {% if r == 'w' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--black rounded--small"></span>
-                  {% elsif r == 'd' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-45 rounded--small"></span>
-                  {% else %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-15 rounded--small"></span>
-                  {% endif %}
+                  <span class="label label--small lg:label--base text--center w--[12px] lg:w--[14px]">{{ r | upcase }}</span>
                 {% endfor %}
               </span>
             </td>
@@ -56,7 +53,7 @@
         </tbody>
       </table>
       {% else %}
-      <span class="label label--small lg:label--base text--gray-40">Standings unavailable</span>
+      <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">Standings unavailable</span>
       {% endif %}
     </div>
  
@@ -69,12 +66,12 @@
       <div class="flex flex--row flex--between">
         <div>
           <span class="label label--small lg:label--base">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
-          <span class="label label--small lg:label--base text--gray-40">{{ m.date }}</span>
+          <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">{{ m.date }}</span>
         </div>
       </div>
       {% endfor %}
       {% else %}
-      <span class="label label--small lg:label--base text--gray-40">No recent results</span>
+      <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">No recent results</span>
       {% endif %}
  
       <span class="title title--small lg:title--base">xG Watch</span>
@@ -83,7 +80,7 @@
         <div class="flex flex--row flex--between">
           <div>
             <span class="label label--small lg:label--base">{{ xg_watch.over.team_name }}</span>
-            <span class="label label--small lg:label--base text--gray-40">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</span>
+            <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">GD {{ xg_watch.over.gd }} vs xGD {{ xg_watch.over.xgd }}</span>
           </div>
           <span class="title title--small lg:title--base">+{{ xg_watch.over.delta }}</span>
         </div>
@@ -92,17 +89,18 @@
         <div class="flex flex--row flex--between">
           <div>
             <span class="label label--small lg:label--base">{{ xg_watch.under.team_name }}</span>
-            <span class="label label--small lg:label--base text--gray-40">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</span>
+            <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">GD {{ xg_watch.under.gd }} vs xGD {{ xg_watch.under.xgd }}</span>
           </div>
           <span class="title title--small lg:title--base">{{ xg_watch.under.delta }}</span>
         </div>
         {% endif %}
       {% else %}
-      <span class="label label--small lg:label--base text--gray-40">No xG data</span>
+      <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">No xG data</span>
       {% endif %}
     </div>
  
   </div>
  
-  <span class="label label--small lg:label--base text--gray-40">Standings updated {{ updated_at | date: "%-I:%M %p" }}</span>
+  <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">Standings updated {{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
+ 
