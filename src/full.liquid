@@ -50,9 +50,9 @@
             <td class="{{ playoff_line }}"><span class="label label--small lg:label--base{% if t.rank > 8 %} text--gray-40 1bit:text--black 2bit:text--gray-30{% endif %}">{{ t.gd }}</span></td>
             <td class="{{ playoff_line }}"><span class="label label--small lg:label--base{% if t.rank > 8 %} text--gray-40 1bit:text--black 2bit:text--gray-30{% endif %}">{{ t.pts }}</span></td>
             <td class="{{ playoff_line }}">
-              <span class="flex flex--row gap--xsmall">
+              <span class="flex flex--row">
                 {% for r in t.form | default: empty_array %}
-                  <span class="label label--small lg:label--base text--center w--[12px] lg:w--[14px]">{{ r | upcase }}</span>
+                  <span class="label label--small lg:label--base">{{ r | upcase }}</span>
                 {% endfor %}
               </span>
             </td>
@@ -142,4 +142,3 @@
  
   <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">Standings updated {{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
- 
