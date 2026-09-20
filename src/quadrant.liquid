@@ -39,12 +39,9 @@
         <td><span class="label label--small lg:label--base">{{ t.gd }}</span></td>
         <td><span class="label label--small lg:label--base">{{ t.pts }}</span></td>
         <td>
-          <span class="flex flex--row gap--xsmall">
+          <span class="flex flex--row">
             {% for r in t.form | default: empty_array %}
-              {% if r == 'w' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--black rounded--small"></span>
-              {% elsif r == 'd' %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-45 rounded--small"></span>
-              {% else %}<span class="w--[6px] h--[6px] lg:w--[8px] lg:h--[8px] bg--gray-15 rounded--small"></span>
-              {% endif %}
+              <span class="label label--small lg:label--base">{{ r | upcase }}</span>
             {% endfor %}
           </span>
         </td>
@@ -53,17 +50,17 @@
     </tbody>
   </table>
   {% else %}
-  <span class="label label--small lg:label--base text--gray-40">Standings unavailable</span>
+  <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">Standings unavailable</span>
   {% endif %}
  
   <div class="flex flex--row flex--between">
     {% if recent_results.size > 0 %}
     {% for m in recent_results limit: 1 %}
-    <span class="label label--small lg:label--base text--gray-40">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
+    <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
     {% endfor %}
     {% else %}
-    <span class="label label--small lg:label--base text--gray-40">No recent results</span>
+    <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">No recent results</span>
     {% endif %}
-    <span class="label label--small lg:label--base text--gray-40">{{ updated_at | date: "%-I:%M %p" }}</span>
+    <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">{{ updated_at | date: "%-I:%M %p" }}</span>
   </div>
 </div>
