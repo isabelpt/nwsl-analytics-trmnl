@@ -14,7 +14,7 @@
  
 <div class="layout layout--col gap--small lg:gap--medium mt--medium lg:mt--large">
   {% if standings.size > 0 %}
-  <table class="table table--xsmall lg:table--small w--full">
+  <table class="table table--xsmall lg:table--small w--full" data-table-limit="true" data-table-overflow-counter="false">
     <thead>
       <tr>
         <th><span class="label label--small lg:label--base">#</span></th>
@@ -25,7 +25,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for t in standings limit: 7 %}
+      {% for t in standings %}
       <tr>
         <td>
           <span class="label label--small lg:label--base">
@@ -51,16 +51,15 @@
   </table>
   {% else %}
   <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">Standings unavailable</span>
+  {% endif %} 
+</div>
+<div class="mx--1 self--center flex flex--row flex--between">
+  {% if recent_results.size > 0 %}
+  {% for m in recent_results limit: 1 %}
+  <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
+  {% endfor %}
+  {% else %}
+  <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">No recent results</span>
   {% endif %}
- 
-  <div class="flex flex--row flex--between">
-    {% if recent_results.size > 0 %}
-    {% for m in recent_results limit: 1 %}
-    <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
-    {% endfor %}
-    {% else %}
-    <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">No recent results</span>
-    {% endif %}
-    <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">{{ updated_at | date: "%-I:%M %p" }}</span>
-  </div>
+  <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">{{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
