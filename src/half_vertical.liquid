@@ -10,6 +10,7 @@
 <div class="title_bar">
   <img class="image image--adaptive" src="data:image/svg+xml;base64,{{ nwsl_icon_svg | base64_encode }}">
   <span class="title">NWSL</span>
+  <span class="instance">Updated {{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
  
 <div class="layout layout--col gap--small lg:gap--medium mt--medium lg:mt--large">
@@ -54,7 +55,7 @@
   {% else %}
   <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">Standings unavailable</span>
   {% endif %}
- 
+<div>
   <span class="title title--small lg:title--base lg:portrait:title--large">Recent Results</span>
   {% if recent_results.size > 0 %}
   {% for m in recent_results limit: 2 %}
@@ -67,6 +68,7 @@
   <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">No recent results</span>
   {% endif %}
  
-  <span class="label label--small lg:label--base lg:portrait:label--large text--gray-40 1bit:text--black 2bit:text--gray-30">Updated {{ updated_at | date: "%-I:%M %p" }}</span>
+  <span class="label label--small lg:label--base lg:portrait:label--large text--gray-40 1bit:text--black 2bit:text--gray-30"></span>
+</div>
 </div>
  
