@@ -55,20 +55,18 @@
   <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">Standings unavailable</span>
   {% endif %}
  
-  <span class="title title--small lg:title--base">Recent Results</span>
+  <span class="title title--small lg:title--base lg:portrait:title--large">Recent Results</span>
   {% if recent_results.size > 0 %}
   {% for m in recent_results limit: 2 %}
-  <div class="flex flex--row flex--between">
-    <div>
-      <span class="label label--small lg:label--base">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
-      <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">{{ m.date }}</span>
-    </div>
+  <div class="flex flex--row lg:portrait:flex--col flex--between">
+      <span class="label label--small lg:label--base lg:portrait:label--xlarge">{{ m.home }} {{ m.home_score }}–{{ m.away_score }} {{ m.away }}</span>
+      <span class="label label--small lg:label--base lg:portrait:label--xlarge text--gray-40 1bit:text--black 2bit:text--gray-30">{{ m.date }}</span>
   </div>
   {% endfor %}
   {% else %}
   <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">No recent results</span>
   {% endif %}
  
-  <span class="label label--small lg:label--base text--gray-40 1bit:text--black 2bit:text--gray-30">Updated {{ updated_at | date: "%-I:%M %p" }}</span>
+  <span class="label label--small lg:label--base lg:portrait:label--large text--gray-40 1bit:text--black 2bit:text--gray-30">Updated {{ updated_at | date: "%-I:%M %p" }}</span>
 </div>
  
