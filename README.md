@@ -49,4 +49,4 @@ See `settings.yml` for the full reference configuration.
 
 ## Data source
 
-All data comes from [American Soccer Analysis](https://www.americansocceranalysis.com/), a free, public, no-auth API..
+All data comes from [American Soccer Analysis](https://www.americansocceranalysis.com/), a free, public, no-auth API.
